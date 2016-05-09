@@ -12,11 +12,12 @@ typedef struct {
   float x[3], v[3];
 } Particle;
 
-static PyObject* py_new_array(PyObject *self, PyObject *args)
+static PyObject* py_as_nparray(PyObject *self, PyObject *args)
 {
+  // Suppose you have a data in C code and want to pass to Python as an array
   const int np=10;
   Particle* const p= calloc(sizeof(Particle), np);
-  // Suppose this memory is allocated in a C code and freed by the C code
+  // This memory is assumed to be freed by the C code
   // (Memory leak in this example)
 
   int nd=2;
@@ -28,6 +29,7 @@ static PyObject* py_new_array(PyObject *self, PyObject *args)
 
 static PyObject* py_read_array(PyObject *self, PyObject *args)
 {
+  // Read 2d array
   PyObject *bufobj;
   if(!PyArg_ParseTuple(args, "O", &bufobj))
     return NULL;
@@ -50,7 +52,7 @@ static PyObject* py_read_array(PyObject *self, PyObject *args)
     return NULL;
   }
 
-  const int n= view.shape[0];
+  const int nrow= view.shape[0];
   const int ncol= view.shape[1];
 
   if(ncol < 2) {
@@ -62,9 +64,9 @@ static PyObject* py_read_array(PyObject *self, PyObject *args)
   const size_t next_row= view.strides[0]/sizeof(double);
   const size_t next_col= view.strides[1]/sizeof(double);
   
-  for(int i=0; i<n; ++i) {
+  for(int i=0; i<nrow; ++i) {
     double col1= *p;
-    double col2=  *(p + next_col);
+    double col2= *(p + next_col);
       
     printf("%le %le\n", col1, col2);
     p += next_row;
@@ -74,7 +76,7 @@ static PyObject* py_read_array(PyObject *self, PyObject *args)
 }
 
 static PyMethodDef methods[] = {
-  {"new_array", py_new_array, METH_VARARGS, "return a new np.array"},
+  {"as_nparray", py_as_nparray, METH_VARARGS, "return a new np.array"},
   {"read_array", py_read_array, METH_VARARGS, "read an array"}, 
   {NULL, NULL, 0, NULL}
 };
