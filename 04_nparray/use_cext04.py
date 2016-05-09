@@ -7,4 +7,4 @@ print(a)
 
 print('Reading array b in C extension')
 b = np.ones((4, 3))
-cext04.read_array(b)
+cext04.read_2darray(b)

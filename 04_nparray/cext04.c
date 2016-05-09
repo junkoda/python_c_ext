@@ -14,7 +14,7 @@ typedef struct {
 
 static PyObject* py_as_nparray(PyObject *self, PyObject *args)
 {
-  // Suppose you have a data in C code and want to pass to Python as an array
+  // Suppose you have data in C code and want to pass to Python as an array
   const int np=10;
   Particle* const p= calloc(sizeof(Particle), np);
   // This memory is assumed to be freed by the C code
@@ -27,7 +27,7 @@ static PyObject* py_as_nparray(PyObject *self, PyObject *args)
   return PyArray_SimpleNewFromData(nd, dims, NPY_FLOAT, p);
 }
 
-static PyObject* py_read_array(PyObject *self, PyObject *args)
+static PyObject* py_read_2darray(PyObject *self, PyObject *args)
 {
   // Read 2d array
   PyObject *bufobj;
@@ -77,7 +77,7 @@ static PyObject* py_read_array(PyObject *self, PyObject *args)
 
 static PyMethodDef methods[] = {
   {"as_nparray", py_as_nparray, METH_VARARGS, "return a new np.array"},
-  {"read_array", py_read_array, METH_VARARGS, "read an array"}, 
+  {"read_2darray", py_read_2darray, METH_VARARGS, "read an array"}, 
   {NULL, NULL, 0, NULL}
 };
 
