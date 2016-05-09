@@ -44,7 +44,7 @@ static PyMethodDef methods[] = {
 static struct PyModuleDef module = {
   PyModuleDef_HEAD_INIT,
   "cext03",             // name of this module
-  "Use C/C++ pointer",  // Doc String
+  "Pass filename to C extension",  // Doc String
   -1,
   methods
 };
